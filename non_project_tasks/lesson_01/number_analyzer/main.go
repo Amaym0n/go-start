@@ -53,9 +53,11 @@ func main() {
 	_, err := fmt.Scan(&number)
 	if err != nil {
 		fmt.Printf("Значение не сооветствует целому числу. Error: %s", err)
+		return
 	}
 	if number < 1 || number > 10000 {
 		fmt.Println("Значение должно входить в диапозон [1, 10000]")
+		return
 	}
 	sum, even_count, odd_count, dividedBy3 := accumulation(number)
 	fmt.Printf("Общая сумма: %d\nКоличество четных: %d\nКоличество нечетных: %d\nСумма чисел, которые делятся на 3: %d\n", sum, even_count, odd_count, dividedBy3)

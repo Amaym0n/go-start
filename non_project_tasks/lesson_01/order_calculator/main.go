@@ -96,12 +96,14 @@ func main() {
 	}
 	if a_err != nil {
 		fmt.Printf("Некорректное значение, %s", a_err)
+		return
 	}
 	// Количество
 	fmt.Println("Введите количество кодов от 1 до 10:")
 	_, c_err := fmt.Scan(&count)
 	if c_err != nil {
 		fmt.Printf("Некорректное значение, %s", c_err)
+		return
 	}
 	if count < 1 || count > 10 {
 		fmt.Println("Количество должно быть от 1 до 10")
