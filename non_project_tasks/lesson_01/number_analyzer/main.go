@@ -25,11 +25,9 @@ package main
 //	N = 6  -> сумма 21, четных 3, нечетных 3, сумма кратных 3 равна 9
 //	N = 0  -> сообщение о недопустимом диапазоне
 //	N = abc -> сообщение об ошибке чтения
-//
-// TODO: реализуй решение внутри main и при необходимости выдели свои функции.
+
 import "fmt"
 
-// Выполним все условия по суммах всех чисел
 func accumulation(num int) (int, int, int, int) {
 	sum, evenCount, oddCount, dividedBy3 := 0, 0, 0, 0
 	for i := 1; i <= num; i++ {
@@ -51,11 +49,11 @@ func main() {
 	fmt.Println("Введите целое число от 1 до 10000 включительно:")
 	_, err := fmt.Scan(&number)
 	if err != nil {
-		fmt.Printf("Значение не сооветствует целому числу. Error: %s", err)
+		fmt.Printf("Значение не соответствует целому числу. Error: %s", err)
 		return
 	}
 	if number < 1 || number > 10000 {
-		fmt.Println("Значение должно входить в диапозон [1, 10000]")
+		fmt.Println("Значение должно входить в диапазон [1, 10000]")
 		return
 	}
 	sum, evenCount, oddCount, dividedBy3 := accumulation(number)

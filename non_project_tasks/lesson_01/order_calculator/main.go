@@ -71,9 +71,6 @@ func priceForNominal(amount int) (int, bool) {
 }
 
 func calculateDiscount(amount int, promocode string) (int, int) {
-	if promocode == " " {
-		return 0, amount
-	}
 	if promocode != startGo.promo {
 		return 0, amount
 	}
@@ -111,7 +108,7 @@ func main() {
 		return
 	}
 	// Промокод
-	fmt.Println("Введите промокод. Пробел будет являться пустой строкой:")
+	fmt.Println("Введите промокод. Символ '-' будет являться пустой строкой:")
 	_, promocodeError := fmt.Scan(&promocode)
 	if promocodeError != nil {
 		fmt.Printf("Некорректное значение, %s", promocodeError)
