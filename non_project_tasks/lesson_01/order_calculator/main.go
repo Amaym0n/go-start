@@ -45,42 +45,43 @@ package main
 //  3. Номинал 777, количество 1.
 //  4. Поддерживаемый номинал, количество 0.
 //  5. Вместо номинала введена строка.
-//
-// TODO: реализуй решение внутри main и добавь необходимые функции.
+
 import (
-	"errors"
 	"fmt"
 )
 
-type Promocode struct {
+type promocode struct {
 	promo    string
 	discount int
 }
 
-var startgo = Promocode{"STARTGO", 100}
+var startGo = promocode{"STARTGO", 100}
 
-func priceForNominal(amount int) (int, error) {
+func priceForNominal(amount int) (int, bool) {
 	switch amount {
 	case 1000:
-		return 1090, nil
+		return 1090, true
 	case 2500:
-		return 2690, nil
+		return 2690, true
 	case 5000:
-		return 5290, nil
+		return 5290, true
 	default:
-		return 0, errors.New("Номинал не входит в значения 1000/2500/5000")
+		return 0, false
 	}
 }
 
 func calculateDiscount(amount int, promocode string) (int, int) {
-	if promocode != startgo.promo {
+	if promocode == " " {
+		return 0, amount
+	}
+	if promocode != startGo.promo {
 		return 0, amount
 	}
 	if amount < 5000 {
 		return 0, amount
 	}
-	newAmount := amount - startgo.discount
-	return startgo.discount, newAmount
+	newAmount := amount - startGo.discount
+	return startGo.discount, newAmount
 }
 
 func main() {
@@ -93,8 +94,8 @@ func main() {
 		fmt.Printf("Некорректное значение, %s", amountError)
 		return
 	}
-	price, priceError := priceForNominal(amount)
-	if priceError != nil {
+	price, priceBool := priceForNominal(amount)
+	if !priceBool {
 		fmt.Println("Недопустимый номинал")
 		return
 	}
@@ -110,7 +111,7 @@ func main() {
 		return
 	}
 	// Промокод
-	fmt.Println("Введите промокод:")
+	fmt.Println("Введите промокод. Пробел будет являться пустой строкой:")
 	_, promocodeError := fmt.Scan(&promocode)
 	if promocodeError != nil {
 		fmt.Printf("Некорректное значение, %s", promocodeError)
@@ -119,5 +120,5 @@ func main() {
 	totalAmount := price * count
 	discount, newAmount := calculateDiscount(totalAmount, promocode)
 	// Вывод
-	fmt.Printf("Номинал: %d, количество: %d, цена одной карты: %d, сумма до скидки: %d, размер скидки: %d, итог к оплате: %d\n", amount, count, price, price*count, discount, newAmount)
+	fmt.Printf("Номинал: %d, количество: %d, цена одной карты: %d, сумма до скидки: %d, размер скидки: %d, итог к оплате: %d\n", amount, count, price, totalAmount, discount, newAmount)
 }
