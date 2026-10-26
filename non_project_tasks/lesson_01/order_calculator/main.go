@@ -48,6 +48,7 @@ package main
 //
 // TODO: реализуй решение внутри main и добавь необходимые функции.
 import (
+	"errors"
 	"fmt"
 )
 
@@ -56,53 +57,52 @@ type Promocode struct {
 	discount int
 }
 
-var STARTGO = Promocode{"STARTGO", 100}
+var startgo = Promocode{"STARTGO", 100}
 
-func priceForNominal(amount int) int {
+func priceForNominal(amount int) (int, error) {
 	switch amount {
 	case 1000:
-		return 1090
+		return 1090, nil
 	case 2500:
-		return 2690
+		return 2690, nil
 	case 5000:
-		return 5290
+		return 5290, nil
 	default:
-		return 0
+		return 0, errors.New("Номинал не входит в значения 1000/2500/5000")
 	}
 }
 
-func calculateDiscount(amount int, promocode string) (int, int, error) {
-	if promocode != STARTGO.promo {
-		return 0, amount, nil
+func calculateDiscount(amount int, promocode string) (int, int) {
+	if promocode != startgo.promo {
+		return 0, amount
 	}
 	if amount < 5000 {
-		return 0, amount, nil
+		return 0, amount
 	}
-	newAmount := amount - STARTGO.discount
-	return STARTGO.discount, newAmount, nil
+	newAmount := amount - startgo.discount
+	return startgo.discount, newAmount
 }
 
 func main() {
-	// TODO: твое решение.
 	var amount, count int
 	var promocode string
 	// Номинал
 	fmt.Println("Введите номинал 1000/2500/5000:")
-	_, a_err := fmt.Scan(&amount)
-	price := priceForNominal(amount)
-	if price == 0 {
-		fmt.Println("Недопустимый номинал")
+	_, amountError := fmt.Scan(&amount)
+	if amountError != nil {
+		fmt.Printf("Некорректное значение, %s", amountError)
 		return
 	}
-	if a_err != nil {
-		fmt.Printf("Некорректное значение, %s", a_err)
+	price, priceError := priceForNominal(amount)
+	if priceError != nil {
+		fmt.Println("Недопустимый номинал")
 		return
 	}
 	// Количество
 	fmt.Println("Введите количество кодов от 1 до 10:")
-	_, c_err := fmt.Scan(&count)
-	if c_err != nil {
-		fmt.Printf("Некорректное значение, %s", c_err)
+	_, countError := fmt.Scan(&count)
+	if countError != nil {
+		fmt.Printf("Некорректное значение, %s", countError)
 		return
 	}
 	if count < 1 || count > 10 {
@@ -111,17 +111,13 @@ func main() {
 	}
 	// Промокод
 	fmt.Println("Введите промокод:")
-	_, p_err := fmt.Scan(&promocode)
-	if p_err != nil {
-		fmt.Printf("Некорректное значение, %s", p_err)
+	_, promocodeError := fmt.Scan(&promocode)
+	if promocodeError != nil {
+		fmt.Printf("Некорректное значение, %s", promocodeError)
 		return
 	}
-	total_amount := price * count
-	discount, newAmount, err := calculateDiscount(total_amount, promocode)
-	if err != nil {
-		fmt.Printf("Случилось непредвиденное исключение: %s", err)
-		return
-	}
+	totalAmount := price * count
+	discount, newAmount := calculateDiscount(totalAmount, promocode)
 	// Вывод
-	fmt.Printf("Номинал: %d, количество: %d, цена одной карты: %d, сумма до скидки: %d, размер скидки: %d, итог к оплате: %d", amount, count, price, price*count, discount, newAmount)
+	fmt.Printf("Номинал: %d, количество: %d, цена одной карты: %d, сумма до скидки: %d, размер скидки: %d, итог к оплате: %d\n", amount, count, price, price*count, discount, newAmount)
 }

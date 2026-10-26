@@ -31,23 +31,22 @@ import "fmt"
 
 // Выполним все условия по суммах всех чисел
 func accumulation(num int) (int, int, int, int) {
-	sum, even_count, odd_count, dividedBy3 := 0, 0, 0, 0
+	sum, evenCount, oddCount, dividedBy3 := 0, 0, 0, 0
 	for i := 1; i <= num; i++ {
-		if i % 2 == 0 {
-			even_count++
+		if i%2 == 0 {
+			evenCount++
 		} else {
-			odd_count++
+			oddCount++
 		}
-		if i % 3 == 0 {
+		if i%3 == 0 {
 			dividedBy3 += i
 		}
 		sum += i
 	}
-	return sum, even_count, odd_count, dividedBy3
+	return sum, evenCount, oddCount, dividedBy3
 }
 
 func main() {
-	// TODO: твое решение.
 	var number int
 	fmt.Println("Введите целое число от 1 до 10000 включительно:")
 	_, err := fmt.Scan(&number)
@@ -59,7 +58,6 @@ func main() {
 		fmt.Println("Значение должно входить в диапозон [1, 10000]")
 		return
 	}
-	sum, even_count, odd_count, dividedBy3 := accumulation(number)
-	fmt.Printf("Общая сумма: %d\nКоличество четных: %d\nКоличество нечетных: %d\nСумма чисел, которые делятся на 3: %d\n", sum, even_count, odd_count, dividedBy3)
-	// При N = 3 ответ - 6/1/2/3
+	sum, evenCount, oddCount, dividedBy3 := accumulation(number)
+	fmt.Printf("Общая сумма: %d\nКоличество четных: %d\nКоличество нечетных: %d\nСумма чисел, которые делятся на 3: %d\n", sum, evenCount, oddCount, dividedBy3)
 }
